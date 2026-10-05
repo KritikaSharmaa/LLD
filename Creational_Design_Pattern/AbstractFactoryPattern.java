@@ -66,7 +66,6 @@ class NonVegMealFactory implements MealFactory {
     }
 }
 
-
 public class AbstractFactoryPattern {
     public static void main(String[] args) {
         // MealFactory vegMealFactory = new VegMealFactory();
