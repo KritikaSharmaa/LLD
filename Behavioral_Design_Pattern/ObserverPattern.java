@@ -75,9 +75,7 @@ class YoutubeChannel implements  Channel{
         System.out.println(videoTitle + " uploaded successfully..");
         notifySubscribers(videoTitle);
     }
-    
 }
-
 
 public class ObserverPattern {
     public static void main(String[] args) {
