@@ -1,58 +1,129 @@
 package Behavioral_Design_Pattern;
 
-class Order {
-    private String currentState;
+// OrderContext class manages the current state of the order
+class OrderContext {
+    private OrderState currentState;
 
-    public Order() {
-        this.currentState = "ORDER_PLACED";
+    public OrderContext() {
+        this.currentState = new OrderPlacedState();
     }
 
+    // Constructor initializes the state to ORDER_PLACED
+    public void setState(OrderState state) {
+        currentState = state;
+    }
+
+    // Method to move the order to the next state
     public void next() {
-        switch (currentState) {
-            case "ORDER_PLACED":
-                this.currentState = "PREPARING_ORDER";
-                break;
-            case "PREPARING_ORDER":
-                this.currentState = "ORDER_DISPATCHED";
-                break;
-            case "ORDER_DISPATCHED":
-                this.currentState = "ORDER_DELIVERED";
-                break;
-            default:
-                break;
-        }
+        currentState.next(this);
     }
 
-    public String cancelOrder() {
-        if (currentState == "ORDER_PLACED" || currentState == "PREPARING_ORDER") {
-            currentState = "ORDER_CANCELLED";
-            return "Your Order is cancelled";
-        }
-
-        return "Your Order Can't be cancelled";
+    // Method to cancel the order
+    public void cancelOrder() {
+        currentState.cancelled(this);
     }
 
-    public void getOrderState(){
-        System.out.println("Current State: " +this.currentState);
+    public String getState() {
+        return currentState.getStateName();
+    }
+
+}
+
+interface OrderState {
+    void next(OrderContext context);
+
+    void cancelled(OrderContext context);
+
+    String getStateName();
+}
+
+class OrderPlacedState implements OrderState {
+
+    @Override
+    public void next(OrderContext context) {
+        context.setState(new PrepareOrderState());
+        System.out.println("Order is now being prepared.");
+    }
+
+    @Override
+    public void cancelled(OrderContext context) {
+        context.setState(new CancelledState());
+        System.out.println("Order has been cancelled.");
+    }
+
+    @Override
+    public String getStateName() {
+        return "ORDER_PLACED";
+    }
+
+}
+
+class PrepareOrderState implements OrderState {
+
+    @Override
+    public void next(OrderContext context) {
+        context.setState(new DeliverOrderState());
+        System.out.println("Order is now being dispatched.");
+    }
+
+    @Override
+    public void cancelled(OrderContext context) {
+        context.setState(new CancelledState());
+        System.out.println("Order has been cancelled.");
+    }
+
+    @Override
+    public String getStateName() {
+        return "ORDER_DISPATCHED";
+    }
+
+}
+
+class DeliverOrderState implements OrderState {
+
+    @Override
+    public void next(OrderContext context) {
+        context.setState(null);
+        System.out.println("Order is delivered.");
+    }
+
+    @Override
+    public void cancelled(OrderContext context) {
+        System.out.println("Order cant be cancelled.");
+    }
+
+    @Override
+    public String getStateName() {
+        return "ORDER_DELIVERED";
+    }
+
+}
+
+// CancelledState handles the behavior when the order is cancelled
+class CancelledState implements OrderState {
+    public void next(OrderContext context) {
+        System.out.println("Cancelled order cannot move to next state.");
+    }
+
+    public void cancelled(OrderContext context) {
+        System.out.println("Order is already cancelled.");
+    }
+
+    public String getStateName() {
+        return "CANCELLED";
     }
 }
 
 public class StatePattern {
     public static void main(String[] args) {
-        Order order = new Order();
-        order.getOrderState();  // order_placed
+        OrderContext order = new OrderContext();
+        System.out.println(order.getState());   //order placed
 
-        order.next();           
-        order.getOrderState();  //preparing_order
-
-        order.next();           
-        order.getOrderState();  // order_dispatched
-
-        System.out.println(order.cancelOrder());    //cant cancel
-
-        order.next();           
-        order.getOrderState();  //order delivered
-
+        order.next();   //preparing order
+        order.cancelOrder(); // cant cancel
+        order.next();   //order dispatched
+        order.next(); //order delivered
+        System.out.println(order.getState()); //order delivered
 
     }
 }
