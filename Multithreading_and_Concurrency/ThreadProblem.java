@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 package Multithreading_and_Concurrency;
+=======
+    package Multithreading_and_Concurrency;
+>>>>>>> 3aec82c ([Multithreading and Concurrency] creating threads using Thread class and Runnable interface)
 
 //Problem Statement:
 // Imagine you’ve placed an order, and the next steps involve sending three notifications:
@@ -71,3 +75,9 @@ public class ThreadProblem {
         OrderService.main(args); //main() ke saath static likha hai.Isliye hum ise directly call kar sakte hai:
     }
 }
+
+// Understanding the Issue
+// In real-world applications, executing tasks sequentially like this can lead to significant inefficiencies, 
+// especially when tasks involve waiting periods, such as sending SMS, emails, or calculating ETAs. 
+// In our current approach, each operation must complete before the next one begins, 
+// causing unnecessary delays and making the system slower than it needs to be.
