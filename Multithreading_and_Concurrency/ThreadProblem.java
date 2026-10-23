@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 package Multithreading_and_Concurrency;
-=======
-    package Multithreading_and_Concurrency;
->>>>>>> 3aec82c ([Multithreading and Concurrency] creating threads using Thread class and Runnable interface)
 
 //Problem Statement:
 // Imagine you’ve placed an order, and the next steps involve sending three notifications:
