@@ -1,11 +1,6 @@
 package Multithreading_and_Concurrency;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 class sendSMSThread extends Thread {
     public void run() {
